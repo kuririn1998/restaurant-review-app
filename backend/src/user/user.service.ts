@@ -2,6 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
+import bcrypt from 'bcrypt';
+
 
 @Injectable()
 export class UserService {
@@ -16,7 +18,8 @@ export class UserService {
     email: string,
     password: string,
   ): Promise<User> {
-    const newUser = this.userRepository.create({ username, email, password });
+    const hashPassword = await bcrypt.hash(password, 10);
+    const newUser = this.userRepository.create({ username, email, password: hashPassword });
     return this.userRepository.save(newUser);
   }
 
@@ -24,7 +27,10 @@ export class UserService {
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user) {
       throw new UnauthorizedException('このユーザーは存在しません。');
-    } else if (user.password != password) {
+    }
+    const hashPassword = await bcrypt.hash(password, 10);
+    const isPasswordValid = await bcrypt.compare(hashPassword, user.password);
+    if (isPasswordValid) {
       throw new UnauthorizedException('パスワードが違います。');
     }
     return user;
