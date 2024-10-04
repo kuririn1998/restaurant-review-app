@@ -10,7 +10,7 @@ import { UserModule } from './user/user.module';
       host: 'localhost',
       port: 3306,
       username: 'root', // MySQLのユーザー名
-      password: '1qazXSW"', // MySQLのパスワード
+      password: '', // MySQLのパスワード
       database: 'restaurant_db', // データベース名
       entities: [path.resolve(__dirname, '**', '*.entity.{ts,js}')],
       synchronize: true, // 本番環境ではfalse推奨

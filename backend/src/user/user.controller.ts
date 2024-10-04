@@ -3,7 +3,8 @@ import { UserService } from './user.service';
 
 @Controller('api')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) {
+  }
 
   @Post('register')
   async registerUser(
@@ -12,5 +13,13 @@ export class UserController {
     @Body('password') password: string,
   ) {
     return this.userService.createUser(username, email, password);
+  }
+
+  @Post('login')
+  async loginUser(
+    @Body('email') email: string,
+    @Body('password') password: string,
+  ) {
+    return this.userService.loginUser(email, password);
   }
 }
