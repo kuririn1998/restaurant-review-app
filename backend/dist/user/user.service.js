@@ -26,8 +26,34 @@ let UserService = class UserService {
         this.userRepository = userRepository;
     }
     async createUser(username, email, password) {
+        if (username.length < 5 || username.length > 20) {
+            throw new common_1.UnauthorizedException('ユーザー名の長さは 3-20 文字にする必要があります。');
+        }
+        const usernameRegex = /\s/;
+        if (!usernameRegex.test(username)) {
+            throw new common_1.UnauthorizedException('ユーザー名の形式が無効です');
+        }
+        if (password.length < 6 || password.length > 30) {
+            throw new common_1.UnauthorizedException('パスワードの長さは 6-30 文字にする必要があります。');
+        }
+        const passwordRegex = /\s/;
+        if (!passwordRegex.test(password)) {
+            throw new common_1.UnauthorizedException('パスワードの形式が無効です');
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            throw new common_1.UnauthorizedException('Eメールの形式が無効です');
+        }
         const hashPassword = await bcrypt_1.default.hash(password, 10);
         const newUser = this.userRepository.create({ username, email, password: hashPassword });
+        const existingUserName = await this.userRepository.findOne({ where: { username } });
+        if (existingUserName) {
+            throw new common_1.ConflictException('ユーザー名が存在しています。');
+        }
+        const existingUserEmail = await this.userRepository.findOne({ where: { email } });
+        if (existingUserEmail) {
+            throw new common_1.ConflictException('emailが存在しています。');
+        }
         return this.userRepository.save(newUser);
     }
     async loginUser(email, password) {
