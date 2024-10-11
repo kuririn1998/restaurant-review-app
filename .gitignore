@@ -1,10 +1,14 @@
-# compiled output
-/dist
-/node_modules
-/build
+# コンパイルされた出力を無視
+**/dist/
+**/build/
+**/out/
 
-# Logs
-logs
+# Node.jsの依存関係を無視
+**/node_modules/
+
+# ログファイルを無視
+logs/
+**/logs/
 *.log
 npm-debug.log*
 pnpm-debug.log*
@@ -12,15 +16,15 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-# OS
+# OS固有のファイルを無視
 .DS_Store
 
-# Tests
-/coverage
-/.nyc_output
+# テスト関連のファイルを無視
+**/coverage/
+**/.nyc_output/
 
-# IDEs and editors
-/.idea
+# IDEやエディタの設定を無視
+**/.idea/
 .project
 .classpath
 .c9/
@@ -28,29 +32,29 @@ lerna-debug.log*
 .settings/
 *.sublime-workspace
 
-# IDE - VSCode
-.vscode/*
+# VSCodeの設定を無視。ただし必要なものは例外として許可
+.vscode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# dotenv environment variable files
+# 環境変数ファイルを無視
 .env
 .env.development.local
 .env.test.local
 .env.production.local
 .env.local
 
-# temp directory
-.temp
-.tmp
+# 一時ディレクトリを無視
+.temp/
+.tmp/
 
-# Runtime data
-pids
+# ランタイムデータを無視
+pids/
 *.pid
 *.seed
 *.pid.lock
 
-# Diagnostic reports (https://nodejs.org/api/report.html)
+# 診断レポートを無視
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json

@@ -6,12 +6,12 @@
     "frontend"
   ],
   "scripts": {
-    "dev:backend": "npm --prefix backend run start:dev",
-    "dev:frontend": "npm --prefix frontend run dev",
-    "build:backend": "npm --prefix backend run build",
-    "build:frontend": "npm --prefix frontend run build",
-    "start:backend": "npm --prefix backend run start",
-    "start:frontend": "npm --prefix frontend run start"
+    "dev:backend": "yarn workspace backend run start:dev",
+    "dev:frontend": "yarn workspace frontend run dev",
+    "build:backend": "yarn workspace backend run build",
+    "build:frontend": "yarn workspace frontend run build",
+    "start:backend": "yarn workspace backend run start",
+    "start:frontend": "yarn workspace frontend run start"
   },
   "devDependencies": {
     "@types/node": "^22.7.2"

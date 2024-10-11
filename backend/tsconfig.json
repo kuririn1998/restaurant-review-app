@@ -22,7 +22,7 @@
     "resolveJsonModule": true,
     "typeRoots": ["./node_modules/@types"],
     "strict": true,
-    "rootDir": "./src"
+    "rootDir": "."
   },
   "include": ["src/**/*.ts", "test/**/*.ts"],
   "exclude": ["node_modules", "dist"]

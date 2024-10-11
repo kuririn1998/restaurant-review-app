@@ -1,85 +1,103 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Restaurant Review App
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This is a full-stack restaurant review application. The frontend is built with **Next.js** and the backend is powered by **NestJS**. Users can browse and submit reviews for various restaurants.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Directory Structure
+```bash
+root/
+├── backend/                             # バックエンドのディレクトリ
+│   ├── src/                             # ソースコード
+│   │   ├── app.controller.ts            # エンドポイントのロジックを定義
+│   │   ├── app.module.ts                # アプリケーションモジュールの定義
+│   │   ├── app.service.ts               # ビジネスロジックを担当するサービス層
+│   │   ├── main.ts                      # アプリケーションのエントリーポイント
+│   ├── test/                            # テスト関連ファイル
+│   │   ├── app.e2e-spec.ts              # End-to-Endテストファイル
+│   ├── .eslintrc.js                     # ESLintの設定ファイル
+│   ├── package.json                     # バックエンドの依存関係とスクリプト
+│   ├── tsconfig.json                    # TypeScriptのコンパイル設定
+│   ├── tsconfig.build.json              # TypeScriptのビルド用設定
+│   ├── dist/                            # コンパイル後の出力ディレクトリ
+│   └── node_modules/                    # Node.jsの依存関係
+├── frontend/                            # フロントエンドのディレクトリ
+│   ├── src/                             # ソースコード
+│   │   ├── pages/                       # Next.jsの各ページコンポーネント
+│   │   └── styles/                      # CSSスタイル
+│   ├── public/                          # 静的ファイル（画像やファビコンなど）
+│   │   ├── favicon.ico                  # ファビコンファイル
+│   │   └── next.svg                     # Next.jsのロゴ
+│   ├── .env                             # 環境変数ファイル
+│   ├── next.config.mjs                  # Next.jsのカスタム設定ファイル
+│   ├── package.json                     # フロントエンドの依存関係とスクリプト
+│   ├── tsconfig.json                    # フロントエンドのTypeScript設定
+│   └── node_modules/                    # Node.jsの依存関係
+├── .gitignore                           # Gitにコミットしないファイルを定義
+├── .prettierrc                          # Prettierの設定ファイル
+├── README.md                            # プロジェクトの概要と説明
+├── package.json                         # ルートプロジェクトの依存関係とスクリプト
+├── tsconfig.json                        # TypeScriptのルート設定ファイル
+├── nest-cli.json                        # NestJS CLIの設定ファイル
+└── node_modules/                        # ルートのNode.js依存関係
 
-## Description
+```
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Prerequisites
+
+- Node.js (version 19.3.0 or higher)
+- MySQL
+- AWS account (for S3 storage)
+- npm or yarn
 
 ## Project setup
+Monorepo構成
+このプロジェクトは、Yarnワークスペースを使用して管理されたMonorepo構成を採用しており、backendディレクトリにNestJSアプリケーション、frontendディレクトリにNext.jsアプリケーションがそれぞれ配置されています。
 
+依存関係のインストール
+最初に、backendとfrontend両方の依存関係をインストールします：
 ```bash
-$ npm install
+$ yarn install
 ```
 
-## Compile and run the project
+このコマンドにより、npmワークスペースを使用して両方のディレクトリの依存関係が自動的にインストールされます。
 
+アプリケーションの実行
+package.jsonに定義されているスクリプトを使用して、backend（NestJS）とfrontend（Next.js）の両方を個別に、または同時に実行することができます。
+
+**バックエンド（NestJS）の実行**
+NestJSバックエンドを開発モードで実行するには：
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+$ yarn workspace backend run start:dev
+```
+バックエンドを本番用にビルドするには：
+```bash
+$ yarn workspace backend run build
+```
+本番環境でバックエンドを実行するには：
+```bash
+$ yarn workspace backend run start
 ```
 
-## Run tests
-
+**フロントエンド（Next.js）の実行**
+Next.jsフロントエンドを開発モードで実行するには：
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ yarn workspace frontend run dev
+```
+フロントエンドを本番用にビルドするには：
+```bash
+$ yarn workspace frontend run build
+```
+本番環境でフロントエンドを実行するには：
+```bash
+$ yarn workspace frontend run start
 ```
 
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+**バックエンドとフロントエンドの同時実行**
+バックエンドとフロントエンドを同時に開発モードで実行するには、2つのターミナルウィンドウを使用します：
+1つ目のターミナルでバックエンドを実行：
+```bash
+$ yarn workspace backend run start:dev
+```
+2つ目のターミナルでフロントエンドを実行：
+```bash
+$ yarn workspace frontend run dev
+```
