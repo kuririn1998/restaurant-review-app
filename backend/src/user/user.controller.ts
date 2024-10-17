@@ -31,10 +31,10 @@ export class UserController {
     return this.userService.logout(req, res);
   }
 
-  @Get('user/:userId')
+  @Get('profile')
   @UseGuards(JwtGuard)
-  async getProfile(@Param('userId') userId: number): Promise<UserDto> {
-    return this.userService.myProfile(userId);
+  async getProfile(@Req() req): Promise<UserDto> {
+    return this.userService.myProfile(req.user.userId);
   }
 
   @Get('profile/:id')
