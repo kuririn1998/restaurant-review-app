@@ -14,4 +14,14 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column({ type: 'enum', enum: ['admin', 'ordinary', 'owner'], default: 'ordinary' })
+  role: string;
+
+  @Column({ default: false })
+  isAdmin: boolean;
+
+  @Column({ default: true })
+  isProfilePublic: boolean;
+
 }

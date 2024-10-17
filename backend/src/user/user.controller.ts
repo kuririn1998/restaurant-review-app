@@ -1,6 +1,7 @@
-import { Controller, Post, Body, Req, Res, ValidationPipe, UsePipes } from '@nestjs/common';
+import { Controller, Post, Body, Req, Res, ValidationPipe, UsePipes, Get, Param, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './user.dto';
+import { JwtGuard } from '../jwt/jwt.guard';
 
 @Controller('api')
 export class UserController {
@@ -27,4 +28,17 @@ export class UserController {
   async logoutUser(@Req() req: Request, @Res() res: Response) {
     return this.userService.logout(req, res);
   }
+
+  @Get('user/:userId')
+  @UseGuards(JwtGuard)
+  async getProfile(@Param('userId') userId: number): Promise<UserDto> {
+    return this.userService.myProfile(userId);
+  }
+
+  @Get('profile/:id')
+  @UseGuards(JwtGuard)
+  async getUserProfile(@Req() req, @Param('id') targetUserId: number) {
+    return this.userService.userProfile(req.user.userId, targetUserId);
+  }
+
 }
