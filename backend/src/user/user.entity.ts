@@ -24,4 +24,7 @@ export class User {
   @Column({ default: true })
   isProfilePublic: boolean;
 
+  @Column({ default: '' })
+  description: string;
+
 }

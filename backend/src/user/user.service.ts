@@ -11,6 +11,7 @@ import { User } from './user.entity';
 import bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { NotFoundError } from 'rxjs';
+import { UserDtoUpdate } from './user.dto-update';
 
 
 @Injectable()
@@ -92,7 +93,22 @@ export class UserService {
     return { id, username };
   }
 
-  async findUser(id: number) {
+  async updateUser(userId: number, userDtoUpdate: UserDtoUpdate) {
+    const user = await this.findUser(userId);
+    Object.assign(user, userDtoUpdate);
+    return this.userRepository.save(user);
+  }
+
+  async updateAdmin(requestId: number, targetId: number, userDtoUpdate: UserDtoUpdate) {
+    const targetUser = await this.findUser(targetId);
+    const requestUser = await this.findUser(requestId);
+    if (requestUser.isAdmin) {
+      Object.assign(targetUser, userDtoUpdate);
+    }
+    return this.userRepository.save(targetUser);
+  }
+
+  private async findUser(id: number) {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException('ユーザーが見つかりません。');
