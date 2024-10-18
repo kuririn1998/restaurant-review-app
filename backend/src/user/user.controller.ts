@@ -1,6 +1,9 @@
-import { Controller, Post, Body, Req, Res, ValidationPipe, UsePipes } from '@nestjs/common';
+import { Controller, Post, Body, Req, Res, ValidationPipe, UsePipes, Get, Param, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './user.dto';
+import { JwtGuard } from '../jwt/jwt.guard';
+import { UserDtoUpdate } from './user.dto-update';
+import { JwtGuardRole } from '../jwt/jwt.guard-role';
 
 @Controller('api')
 export class UserController {
@@ -27,4 +30,33 @@ export class UserController {
   async logoutUser(@Req() req: Request, @Res() res: Response) {
     return this.userService.logout(req, res);
   }
+
+  @Get('profile')
+  @UseGuards(JwtGuard)
+  async getProfile(@Req() req): Promise<UserDto> {
+    return this.userService.myProfile(req.user.userId);
+  }
+
+  @Get('profile/:id')
+  @UseGuards(JwtGuard)
+  async getUserProfile(@Req() req, @Param('id') targetUserId: number) {
+    return this.userService.userProfile(req.user.userId, targetUserId);
+  }
+
+  @Post('edit')
+  @UseGuards(JwtGuard)
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async updateProfile(@Req() req, @Body() userDtoUpdate: UserDtoUpdate) {
+    const userId = req.user.userId;
+    return this.userService.updateUser(userId, userDtoUpdate);
+  }
+
+  @Post('edit/:id')
+  @UseGuards(JwtGuard, JwtGuardRole)
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async updateAdminProfile(@Req() req, @Param('id') targetId, @Body() userDtoUpdate: UserDtoUpdate) {
+    const requestId = req.user.userId;
+    return this.userService.updateAdmin(requestId, targetId, userDtoUpdate);
+  }
+
 }
